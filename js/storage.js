@@ -322,8 +322,8 @@ var updatePrefs = function () {
 };
 Storage.whenPrefsLoaded(updatePrefs);
 
-Storage.initPrefs = function () {
-	Storage.loadTeams();
+Storage.initPrefs = async function () {
+	await Storage.loadTeams();
 	if (Config.testclient) {
 		return this.initTestClient();
 	} else if (location.protocol + '//' + location.hostname === Storage.origin) {
@@ -562,14 +562,42 @@ Storage.initTestClient = function () {
 
 Storage.teams = null;
 
-Storage.loadTeams = function () {
+Storage.db = new PouchDB('showdown_teams');
+Storage.remoteDB = new PouchDB('http://admin:couchdb@localhost:5984/showdown_teams'); // I have a local instance for testing
+
+// Some placeholders here. To demonstrate what the API is capable of.
+Storage.db.sync(Storage.remoteDB, {live: true, retry: true})
+.on('change', function(info) {
+// potentially add refresh logic
+	if (info.direction === 'pull') {
+		Storage.loadTeams();
+	}
+})
+.on('paused', function (err) {
+// replication paused (e.g. replication up to date, user went offline)
+}).on('active', function () {
+// replicate resumed (e.g. new changes replicating, user went back online)
+}).on('denied', function (err) {
+// a document failed to replicate (e.g. due to permissions)
+}).on('complete', function (info) {
+// handle complete
+}).on('error', function (err) {
+// handle error
+});
+
+Storage.loadTeams = async function () {
 	if (window.nodewebkit) {
 		return;
 	}
 	this.teams = [];
 	try {
 		if (window.localStorage) {
-			Storage.loadPackedTeams(localStorage.getItem('showdown_teams'));
+			try {
+				const teamDocs = await this.db.allDocs({include_docs: true});
+				this.teams = teamDocs.rows.map(row => row.doc);
+			} catch(error) {
+				console.log(`Error reading from PouchDB`);
+			}
 		}
 	} catch (e) {}
 };
@@ -587,11 +615,31 @@ Storage.loadPackedTeams = function (buffer) {
 	}
 };
 
-Storage.saveTeams = function () {
+Storage.saveTeams = async function () {
+	const { teams, db } = this;
 	try {
 		if (window.localStorage) {
-			localStorage.setItem('showdown_teams', Storage.packAllTeams(this.teams));
-			Storage.cantSave = false;
+			try {
+				await Promise.all(teams.map(async team => {
+					let teamDoc;
+					try {
+						teamDoc = await db.get(team.name);
+					} catch (error) {
+						if (error.name === 'not_found') {
+							teamDoc = { _id: team.name }
+						} else {
+							throw error;
+						}
+					}
+					// We shouldn't be merging an in-memory object with the doc from the DB, but this is a POC
+					return db.put({...team, _id: teamDoc._id, _rev: teamDoc._rev});
+				}));
+				console.log(`Wrote to PouchDB.`);
+				Storage.cantSave = false;
+			} catch (error) {
+				console.log(`Error writing to PouchDB : ${error}`);
+				Storage.cantSave = true;
+			}
 		}
 	} catch (e) {
 		if (e.code === DOMException.QUOTA_EXCEEDED_ERR) {
