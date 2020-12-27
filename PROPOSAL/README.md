@@ -4,6 +4,8 @@
 
 ![Demo](./demo.gif)
 
+[See code changes](https://github.com/aviettran/pokemon-showdown-client/compare/feature/pouchDb)
+
 ## Introduction
 
 For web users, `localStorage` is at the mercy of their web browser. Using a library (`PouchDB`) would provide a feature-rich API for more advanced functionality, most important of which would allow users to sync their teams to an external server.
