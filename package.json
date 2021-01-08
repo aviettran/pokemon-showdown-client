@@ -13,7 +13,9 @@
     "test": "npm run lint && tsc && node build && mocha test/*.js",
     "fix": "eslint --config=.eslintrc.js --fix js/ && eslint --config=build-tools/.eslintrc.js --fix build-tools/update build-tools/build-indexes",
     "build": "node build",
-    "build-full": "node build full"
+    "build-full": "node build full",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "dependencies": {
     "@babel/cli": "^7.2.3",
@@ -30,8 +32,15 @@
     "output-file-sync": "^2.0.1"
   },
   "devDependencies": {
+    "@babel/plugin-transform-modules-umd": "^7.12.1",
+    "@storybook/addon-actions": "^6.1.11",
+    "@storybook/addon-essentials": "^6.1.11",
+    "@storybook/addon-links": "^6.1.11",
+    "@storybook/preact": "^6.1.11",
     "@types/jquery": "^3.5.3",
     "@types/mocha": "^5.2.6",
+    "babel-loader": "^8.2.2",
+    "core-js": "^3.8.2",
     "eslint": "^5.15.1",
     "mocha": "^6.0.2",
     "preact": "^8.3.1",

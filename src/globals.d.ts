@@ -43,3 +43,5 @@ declare var app: {user: AnyObject, rooms: AnyObject, ignore?: AnyObject};
 interface Window {
 	[k: string]: any;
 }
+
+declare var panelModule: any;

@@ -10,7 +10,7 @@
 		"@babel/plugin-proposal-optional-catch-binding",
 
 		"@babel/plugin-transform-exponentiation-operator",
-
+ 
 		"@babel/plugin-transform-arrow-functions",
 		["@babel/plugin-transform-block-scoping", {"throwIfClosureRequired": true}],
 		["@babel/plugin-transform-classes", {"loose": true}],
@@ -24,7 +24,8 @@
 		["@babel/plugin-transform-template-literals", {"loose": true}],
 
 		"@babel/plugin-transform-member-expression-literals",
-		"@babel/plugin-transform-property-literals"
+		"@babel/plugin-transform-property-literals",
+		["@babel/plugin-transform-modules-umd"]
 	],
 	"ignore": [
 		"src/globals.d.ts"
