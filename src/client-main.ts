@@ -269,6 +269,7 @@ class PSUser extends PSModel {
 	named = false;
 	registered = false;
 	avatar = "1";
+	loaded = false;
 	setName(fullName: string, named: boolean, avatar: string) {
 		const loggingIn = (!this.named && named);
 		const {name, group} = BattleTextParser.parseNameParts(fullName);
@@ -277,6 +278,7 @@ class PSUser extends PSModel {
 		this.userid = toID(name);
 		this.named = named;
 		this.avatar = avatar;
+		this.loaded = true;
 		this.update();
 		if (loggingIn) {
 			for (const roomid in PS.rooms) {

@@ -83,8 +83,40 @@ class PSHeader extends preact.Component<{style: {}}> {
 		}
 		return <li><a class={className} href={`/${id}`} draggable={true}>{icon} <span>{title}</span></a>{closeButton}</li>;
 	}
+	renderUsername() {
+		const { user } = PS;
+		const userColor = window.BattleLog && {color: BattleLog.usernameColor(user.userid)};
+		if (!user.loaded) {
+			return (
+				<div class="userbar">
+					<button disabled>Loading...</button>
+				</div>
+			);
+		} else if (user.registered) {
+			return (
+				<span class="username" data-name={user.name} style={userColor}>
+						<i class="fa fa-user" style="color:#779EC5"></i> {user.name}!
+				</span>
+			);
+		} else {
+			return <button name="login">Choose name</button>
+		}	
+	}
+	renderUserbar() {
+		const { prefs } = PS;
+		return (
+			<div class="userbar">
+				{this.renderUsername()}
+				<button class="icon button" name="joinRoom" value="volume" title="Sound" aria-label="Sound">
+					<i class={prefs.mute ? 'fa fa-volume-off' : 'fa fa-volume-up'}></i>
+				</button> {}
+				<button class="icon button" name="joinRoom" value="options" title="Options" aria-label="Options">
+					<i class="fa fa-cog"></i>
+				</button>
+			</div>
+		);
+	}
 	render() {
-		const userColor = window.BattleLog && {color: BattleLog.usernameColor(PS.user.userid)};
 		return <div id="header" class="header" style={this.props.style}>
 			<img
 				class="logo"
@@ -105,17 +137,7 @@ class PSHeader extends preact.Component<{style: {}}> {
 					{PS.rightRoomList.map(roomid => this.renderRoomTab(roomid))}
 				</ul>
 			</div></div>
-			<div class="userbar">
-				<span class="username" data-name={PS.user.name} style={userColor}>
-					<i class="fa fa-user" style="color:#779EC5"></i> {PS.user.name}
-				</span> {}
-				<button class="icon button" name="joinRoom" value="volume" title="Sound" aria-label="Sound">
-					<i class={PS.prefs.mute ? 'fa fa-volume-off' : 'fa fa-volume-up'}></i>
-				</button> {}
-				<button class="icon button" name="joinRoom" value="options" title="Options" aria-label="Options">
-					<i class="fa fa-cog"></i>
-				</button>
-			</div>
+			{this.renderUserbar()}
 		</div>;
 	}
 }
