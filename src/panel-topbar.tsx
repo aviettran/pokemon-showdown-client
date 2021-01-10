@@ -83,8 +83,8 @@ class PSHeader extends preact.Component<{style: {}}> {
 		}
 		return <li><a class={className} href={`/${id}`} draggable={true}>{icon} <span>{title}</span></a>{closeButton}</li>;
 	}
-	Username = () => {
-		const { user } = PS;
+	Username = (props: { user: PSUser }) => {
+		const { user } = props;
 		const userColor = window.BattleLog && {color: BattleLog.usernameColor(user.userid)};
 		if (!user.loaded) {
 			return (
@@ -99,12 +99,12 @@ class PSHeader extends preact.Component<{style: {}}> {
 		}
 		return <button name="joinRoom" value="login" title="Choose Name">Choose name</button>	
 	}
-	Userbar = () => {
-		const { prefs } = PS;
+	Userbar = (props: { user: PSUser, prefs: PSPrefs }) => {
+		const { user, prefs } = props;
 		const { Username } = this;
 		return (
 			<div class="userbar">
-				<Username /> {}
+				<Username user={user}/> {}
 				<button class="icon button" name="joinRoom" value="volume" title="Sound" aria-label="Sound">
 					<i class={prefs.mute ? 'fa fa-volume-off' : 'fa fa-volume-up'}></i>
 				</button> {}
@@ -115,6 +115,7 @@ class PSHeader extends preact.Component<{style: {}}> {
 		);
 	}
 	render() {
+		const { leftRoomList, leftRoomWidth, rightRoomList, user, prefs } = PS;
 		const { Userbar } = this;
 		return <div id="header" class="header" style={this.props.style}>
 			<img
@@ -130,13 +131,13 @@ class PSHeader extends preact.Component<{style: {}}> {
 					{this.renderRoomTab('' as RoomID)}
 				</ul>
 				<ul>
-					{PS.leftRoomList.slice(1).map(roomid => this.renderRoomTab(roomid))}
+					{leftRoomList.slice(1).map(roomid => this.renderRoomTab(roomid))}
 				</ul>
-				<ul class="siderooms" style={{float: 'none', marginLeft: PS.leftRoomWidth - 144}}>
-					{PS.rightRoomList.map(roomid => this.renderRoomTab(roomid))}
+				<ul class="siderooms" style={{float: 'none', marginLeft: leftRoomWidth - 144}}>
+					{rightRoomList.map(roomid => this.renderRoomTab(roomid))}
 				</ul>
 			</div></div>
-			<Userbar />
+			<Userbar user={user} prefs={prefs}/>
 		</div>;
 	}
 }
@@ -360,10 +361,14 @@ PS.roomTypes['options'] = {
 	Component: OptionsPanel,
 };
 
+/* Note for review: It doesn't look like we can pass props in here? Downstream, only room is passed to the preact component as a prop */
 class LoginPanel extends PSRoomPanel {
 	render() {
 		return <PSPanelWrapper room={this.props.room}>
-			<div class="mainmessage"><p>TESTING...</p></div>
+			<div>
+				<p><label class="label">Username: <small class="preview" style={BattleLog.usernameColor(toUserid(PS.user.name))}>(color)</small><input class="textbox autofocus" type="text" name="username" value={PS.user.name} autocomplete="username" /></label></p>
+				<p class="buttonbar"><button type="submit"><strong>Choose name</strong></button> <button name="close">Cancel</button></p>
+			</div>
 		</PSPanelWrapper>;
 	}
 }
