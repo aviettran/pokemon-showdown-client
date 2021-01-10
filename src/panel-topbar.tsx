@@ -83,14 +83,12 @@ class PSHeader extends preact.Component<{style: {}}> {
 		}
 		return <li><a class={className} href={`/${id}`} draggable={true}>{icon} <span>{title}</span></a>{closeButton}</li>;
 	}
-	renderUsername() {
+	Username = () => {
 		const { user } = PS;
 		const userColor = window.BattleLog && {color: BattleLog.usernameColor(user.userid)};
 		if (!user.loaded) {
 			return (
-				<div class="userbar">
-					<button disabled>Loading...</button>
-				</div>
+				<button disabled>Loading...</button>
 			);
 		} else if (user.registered) {
 			return (
@@ -98,15 +96,15 @@ class PSHeader extends preact.Component<{style: {}}> {
 						<i class="fa fa-user" style="color:#779EC5"></i> {user.name}
 				</span>
 			);
-		} else {
-			return <button class="button" name="joinRoom" value="login" title="Choose Name">Choose name</button>
-		}	
+		}
+		return <button name="joinRoom" value="login" title="Choose Name">Choose name</button>	
 	}
-	renderUserbar() {
+	Userbar = () => {
 		const { prefs } = PS;
+		const { Username } = this;
 		return (
 			<div class="userbar">
-				{this.renderUsername()}
+				<Username /> {}
 				<button class="icon button" name="joinRoom" value="volume" title="Sound" aria-label="Sound">
 					<i class={prefs.mute ? 'fa fa-volume-off' : 'fa fa-volume-up'}></i>
 				</button> {}
@@ -117,6 +115,7 @@ class PSHeader extends preact.Component<{style: {}}> {
 		);
 	}
 	render() {
+		const { Userbar } = this;
 		return <div id="header" class="header" style={this.props.style}>
 			<img
 				class="logo"
@@ -137,7 +136,7 @@ class PSHeader extends preact.Component<{style: {}}> {
 					{PS.rightRoomList.map(roomid => this.renderRoomTab(roomid))}
 				</ul>
 			</div></div>
-			{this.renderUserbar()}
+			<Userbar />
 		</div>;
 	}
 }
