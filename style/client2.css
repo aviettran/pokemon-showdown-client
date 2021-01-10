@@ -28,6 +28,9 @@ body {
 .pad p {
 	margin: 9px 0;
 }
+.m-right_medium {
+	margin-right: 5px;
+}
 .buttonbar {
 	margin-top: 1em;
 	text-align: center;

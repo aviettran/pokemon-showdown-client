@@ -88,11 +88,11 @@ class PSHeader extends preact.Component<{style: {}}> {
 		const userColor = window.BattleLog && {color: BattleLog.usernameColor(user.userid)};
 		if (!user.loaded) {
 			return (
-				<button disabled>Loading...</button>
+				<button class="m-right_medium" disabled>Loading...</button>
 			);
 		} else if (user.registered) {
 			return (
-				<span class="username" data-name={user.name} style={userColor}>
+				<span class="username m-right_medium" data-name={user.name} style={userColor}>
 						<i class="fa fa-user" style="color:#779EC5"></i> {user.name}
 				</span>
 			);
@@ -104,10 +104,10 @@ class PSHeader extends preact.Component<{style: {}}> {
 		const { Username } = this;
 		return (
 			<div class="userbar">
-				<Username user={user}/> {}
-				<button class="icon button" name="joinRoom" value="volume" title="Sound" aria-label="Sound">
+				<Username user={user}/>
+				<button class="icon button m-right_medium" name="joinRoom" value="volume" title="Sound" aria-label="Sound">
 					<i class={prefs.mute ? 'fa fa-volume-off' : 'fa fa-volume-up'}></i>
-				</button> {}
+				</button>
 				<button class="icon button" name="joinRoom" value="options" title="Options" aria-label="Options">
 					<i class="fa fa-cog"></i>
 				</button>
