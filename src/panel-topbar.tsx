@@ -95,11 +95,11 @@ class PSHeader extends preact.Component<{style: {}}> {
 		} else if (user.registered) {
 			return (
 				<span class="username" data-name={user.name} style={userColor}>
-						<i class="fa fa-user" style="color:#779EC5"></i> {user.name}!
+						<i class="fa fa-user" style="color:#779EC5"></i> {user.name}
 				</span>
 			);
 		} else {
-			return <button name="login">Choose name</button>
+			return <button class="button" name="joinRoom" value="login" title="Choose Name">Choose name</button>
 		}	
 	}
 	renderUserbar() {
@@ -359,4 +359,16 @@ class OptionsPanel extends PSRoomPanel {
 
 PS.roomTypes['options'] = {
 	Component: OptionsPanel,
+};
+
+class LoginPanel extends PSRoomPanel {
+	render() {
+		return <PSPanelWrapper room={this.props.room}>
+			<div class="mainmessage"><p>TESTING...</p></div>
+		</PSPanelWrapper>;
+	}
+}
+
+PS.roomTypes['login'] = {
+	Component: LoginPanel,
 };
