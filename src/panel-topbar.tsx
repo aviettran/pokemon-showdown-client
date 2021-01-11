@@ -97,7 +97,7 @@ class PSHeader extends preact.Component<{style: {}}> {
 				</span>
 			);
 		}
-		return <button name="joinRoom" value="login" title="Choose Name">Choose name</button>	
+		return <button class="m-right_medium" name="joinRoom" value="login" title="Choose Name">Choose name</button>
 	}
 	Userbar = (props: { user: PSUser, prefs: PSPrefs }) => {
 		const { user, prefs } = props;
@@ -361,13 +361,17 @@ PS.roomTypes['options'] = {
 	Component: OptionsPanel,
 };
 
-/* Note for review: It doesn't look like we can pass props in here? Downstream, only room is passed to the preact component as a prop */
-class LoginPanel extends PSRoomPanel {
+class LoginPanel extends PSRoomPanel<PSRoom, { value: string, style?: {[key: string]: string }}> {
+	updateName = (e: Event ) => {
+		const nameField = e.currentTarget as HTMLInputElement;
+		this.setState({ value: nameField.value, style: { color: BattleLog.usernameColor(toUserid(nameField.value)) }});
+	};
 	render() {
+		const { value, style } = this.state;
 		return <PSPanelWrapper room={this.props.room}>
 			<div>
-				<p><label class="label">Username: <small class="preview" style={BattleLog.usernameColor(toUserid(PS.user.name))}>(color)</small><input class="textbox autofocus" type="text" name="username" value={PS.user.name} autocomplete="username" /></label></p>
-				<p class="buttonbar"><button type="submit"><strong>Choose name</strong></button> <button name="close">Cancel</button></p>
+				<p><label class="label">Username: <small class="preview" style={style}>(color)</small><input class="textbox autofocus" type="text" name="username" value={value} autocomplete="username" onInput={this.updateName}/></label></p>
+				<p class="buttonbar"><button type="submit"><strong>Choose name</strong></button> <button name="closeRoom" value="login">Cancel</button></p>
 			</div>
 		</PSPanelWrapper>;
 	}
