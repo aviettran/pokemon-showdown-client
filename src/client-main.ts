@@ -854,7 +854,7 @@ const PS = new class extends PSModel {
 			switch (hyphenIndex < 0 ? options.id : options.id.slice(0, hyphenIndex + 1)) {
 			case 'teambuilder': case 'ladder': case 'battles': case 'rooms':
 			case 'options': case 'volume': case 'teamdropdown': case 'formatdropdown':
-			case 'news': case 'login':
+			case 'news': case 'login': case 'loginpassword':
 				options.type = options.id;
 				break;
 			case 'battle-': case 'user-': case 'team-':
@@ -881,12 +881,15 @@ const PS = new class extends PSModel {
 			case 'options':
 			case 'volume':
 			case 'user':
+			case 'login':
 				options.location = 'popup';
 				break;
 			case 'teamdropdown':
 			case 'formatdropdown':
-			case 'login':
 				options.location = 'semimodal-popup';
+				break;
+			case 'loginpassword':
+				options.location = 'modal-popup';
 				break;
 			case 'news':
 				options.location = 'mini-window';

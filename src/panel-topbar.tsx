@@ -361,7 +361,7 @@ PS.roomTypes['options'] = {
 	Component: OptionsPanel,
 };
 
-class LoginPanel extends PSRoomPanel<PSRoom, { value: string, style?: {[key: string]: string }}> {
+class LoginPopup extends PSRoomPanel<PSRoom, { value: string, style?: {[key: string]: string }}> {
 	updateName = (e: Event ) => {
 		const nameField = e.currentTarget as HTMLInputElement;
 		this.setState({ value: nameField.value, style: { color: BattleLog.usernameColor(toUserid(nameField.value)) }});
@@ -371,12 +371,27 @@ class LoginPanel extends PSRoomPanel<PSRoom, { value: string, style?: {[key: str
 		return <PSPanelWrapper room={this.props.room}>
 			<div>
 				<p><label class="label">Username: <small class="preview" style={style}>(color)</small><input class="textbox autofocus" type="text" name="username" value={value} autocomplete="username" onInput={this.updateName}/></label></p>
-				<p class="buttonbar"><button type="submit"><strong>Choose name</strong></button> <button name="closeRoom" value="login">Cancel</button></p>
+				<p class="buttonbar"><button /*type="submit"*/ name="joinRoom" value="loginpassword"><strong>Choose name</strong></button> <button name="closeRoom" value="loginpassword">Cancel</button></p>
 			</div>
 		</PSPanelWrapper>;
 	}
 }
 
 PS.roomTypes['login'] = {
-	Component: LoginPanel,
+	Component: LoginPopup,
 };
+
+class LoginPasswordPopup extends PSRoomPanel {
+	render() {
+		return <PSPanelWrapper room={this.props.room}>
+			<form>
+				<p>{BattleLog.parseMessage('test message lel')}</p>
+			</form>
+		</PSPanelWrapper>;
+	}
+}
+
+PS.roomTypes['loginpassword'] = {
+	Component: LoginPasswordPopup,
+};
+
