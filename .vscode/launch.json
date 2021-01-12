@@ -18,6 +18,16 @@
             "type": "pwa-chrome",
             "webRoot": "${workspaceFolder}",
             "preLaunchTask": "npm: build"
+        },
+        {
+            "name": "Listen for XDebug",
+            "type": "php",
+            "request": "launch",
+            "port": 9003,
+            "pathMappings": {
+              "/var/www/html": "${workspaceFolder}"
+            },
+            "log": true
         }
     ]
 } 
