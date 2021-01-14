@@ -38,15 +38,29 @@ services:
       MYSQL_USER: showdown
       MYSQL_PASSWORD: showdown
 
-  web:
+  play:
     build:
       context: .
       dockerfile: Dockerfile-web
     restart: unless-stopped
     ports:
-      - 8080:80
+      - 8443:443
     volumes:
       - ../:/var/www/html
+      - ./certs/localhost.pem:/etc/ssl/certs/ssl-cert-snakeoil.pem
+      - ./certs/localhost-key.pem:/etc/ssl/private/ssl-cert-snakeoil.key
+
+  website:
+    build:
+      context: .
+      dockerfile: Dockerfile-web
+    restart: unless-stopped
+    ports:
+      - 8444:443
+    volumes:
+      - ../website:/var/www/html
+      - ./certs/localhost.pem:/etc/ssl/certs/ssl-cert-snakeoil.pem
+      - ./certs/localhost-key.pem:/etc/ssl/private/ssl-cert-snakeoil.key
 
 volumes:
   db_data:
