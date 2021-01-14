@@ -32,7 +32,7 @@
 	],
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	"forwardPorts": [8080, 3306, 9003], // Apache, MySql, xdebug
+	"forwardPorts": [8443, 8444, 3306, 9003], // Apache, MySql, xdebug
 
 	// Use 'postCreateCommand' to run commands after the container is created.
 	// "postCreateCommand": "yarn install",
