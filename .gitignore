@@ -42,7 +42,8 @@ package-lock.json
 /js/panel-teamdropdown.js
 /js/panel-battle.js
 /js/replay-embed.js
-/js/*.js.map
+/js/**/*.js.map
+/js/modules/*.js
 
 /replays/caches/
 /replays/replay-config.inc.php
