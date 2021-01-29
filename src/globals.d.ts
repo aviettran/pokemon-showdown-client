@@ -44,4 +44,4 @@ interface Window {
 	[k: string]: any;
 }
 
-declare var components: any;
+declare var component: any;

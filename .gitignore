@@ -43,6 +43,7 @@ package-lock.json
 /js/panel-battle.js
 /js/replay-embed.js
 /js/**/*.js.map
+/js/module-loader.js
 /js/modules/*.js
 
 /replays/caches/
